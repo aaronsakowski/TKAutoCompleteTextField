@@ -263,19 +263,27 @@ static NSString *kObserverKeyEnablePreInputSearch = @"enablePreInputSearch";
 
 #pragma mark - suggestionView
 
+- (UITableView *)suggestionView
+{
+    if(!_suggestionView){
+        CGRect frame = self.frame;
+        UITableView *suggestionView = [[UITableView alloc] initWithFrame:frame
+                                                                   style:UITableViewStylePlain];
+        suggestionView.rowHeight = frame.size.height ?: kDefaultHeightForRowInSuggestionView;
+        suggestionView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        suggestionView.delegate = self;
+        suggestionView.dataSource = self;
+        suggestionView.scrollEnabled = YES;
+        suggestionView.hidden = YES;
+        
+        _suggestionView = suggestionView;
+    }
+    return _suggestionView;
+}
+
 - (void)configureSuggestionView
 {
-    CGRect frame = self.frame;
-    UITableView *suggestionView = [[UITableView alloc] initWithFrame:frame
-                                                               style:UITableViewStylePlain];
-    suggestionView.rowHeight = frame.size.height ?: kDefaultHeightForRowInSuggestionView;
-    suggestionView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    suggestionView.delegate = self;
-    suggestionView.dataSource = self;
-    suggestionView.scrollEnabled = YES;
-    suggestionView.hidden = YES;
     
-    self.suggestionView = suggestionView;
 }
 
 - (void)suggestionView:(UITableView *)suggestionView updateFrameWithSuggestions:(NSArray *)suggestions
